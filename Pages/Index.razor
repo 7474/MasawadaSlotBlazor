@@ -1,7 +1,93 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<div>
+    <div>
+        <h1>マサワダスロット Blazor</h1>
+        <hr>
+        <div stylef="width:100%">
+            <div style="max-width:700px;width:100%;display:flex;flex-wrap:wrap;margin:auto">
+                <img src="/images/@currentImages[0]" width="50%" height="50%">
+                <img src="/images/@currentImages[1]" width="50%" height="50%">
+                <img src="/images/@currentImages[2]" width="50%" height="50%">
+                <img src="/images/@currentImages[3]" width="50%" height="50%">
+            </div>
+            <div style="text-align:center">
+                <button @onclick="ButtonClick"
+                        style="background-color: rgb(204, 204, 204); border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;">
+                    @buttonText
+                </button>
+            </div>
+        </div>
+        <hr>
+        <address>
+            masawada slot blazor by <a href="https://github.com/7474">koudenpa</a>.
+            less details at https://koudenpa.hatenablog.com/entry/2020/12/21/000100.
+            <hr />
+            great origial
+            masawada slot by <a href="https://github.com/astj">astj</a>. more details at
+            <ul>
+                <li><a href="https://blog.astj.space/entry/2020/12/06/235824">ma→sa→wa→da で masawada 完成 (masawada slotmachine 第1回) - 平常運転</a></li>
+                <li><a href="https://blog.astj.space/entry/2020/12/13/012539">マ→サ→ワ→ダでマサワダ完成 (masawada slotmachine 第2回) - 平常運転</a></li>
+            </ul>
+        </address>
+    </div>
+</div>
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    private Random random = new Random();
+    private string buttonText = "START!";
+    private int currentCount = 0;
+    private int frameCount = 0;
+    private string[] images = new string[] {
+        "ma.png",
+        "wa.png",
+        "sa.png",
+        "da.png",
+    };
+    private string[] currentImages = new string[]
+    {
+        "ma.png",
+        "sa.png",
+        "wa.png",
+        "da.png",
+        };
+    private string[] masawada = new string[]
+    {
+        "START！",
+        "マ",
+        "サ",
+        "ワ",
+        "ダ",
+        };
+    private Timer timer = new Timer(100);
+
+    private void ButtonClick()
+    {
+        currentCount++;
+        if (currentCount > currentImages.Length)
+        {
+            currentCount = 0;
+        }
+        buttonText = masawada[currentCount];
+    }
+
+    private void updateFrame(object sender, ElapsedEventArgs e)
+    {
+        frameCount++;
+        if (currentCount > 0)
+        {
+            for (int i = currentCount - 1; i < currentImages.Length; i++)
+            {
+                currentImages[i] = images[frameCount % images.Length];
+            }
+        }
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        timer.Elapsed += updateFrame;
+        timer.Start();
+    }
+}
