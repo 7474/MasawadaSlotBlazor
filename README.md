@@ -1,5 +1,8 @@
 # MasawadaSlotBlazor
 
+Access
+https://7474.github.io/MasawadaSlotBlazor/
+and enjoy MasawadaSlotBlazor!
 
 ## Great thanks
 
